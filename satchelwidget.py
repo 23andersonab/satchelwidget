@@ -53,8 +53,8 @@ def extract_lesson_fields(lesson: Dict[str, Any]) -> Dict[str, str]:
     start_raw = lesson.get("period", {}).get("startDateTime") or "00:00"
     end_raw = lesson.get("period", {}).get("endDateTime") or "00:00"
     room = lesson.get("room") or "0"
-    teacher = "No teacher"
-    t = lesson.get("teacher")
+    teacher = ""
+    t = lesson.get("teacher") if t != "" else "No Teacher"
     if isinstance(t, dict):
         teacher = " ".join([v for v in (t.get("title"), t.get("forename"), t.get("surname")) if v]).strip()
     return {
