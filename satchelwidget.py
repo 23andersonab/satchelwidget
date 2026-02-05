@@ -56,7 +56,7 @@ def extract_lesson_fields(lesson: Dict[str, Any]) -> Dict[str, str]:
     teacher = ""
     t = lesson.get("teacher")
     if isinstance(t, dict):
-        teacher = " ".join([v for v in (t.get("title"), t.get("forename"), t.get("surname")) if v]).strip()
+        teacher = " ".join([v for v in (t.get("title"), t.get("surname")) if v]).strip()
     return {
         "subject": subject,
         "start_raw": start_raw,
@@ -259,3 +259,4 @@ def widget(request: Request):
             "Expires": "0",
         },
     )
+
