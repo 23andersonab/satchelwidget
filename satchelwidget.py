@@ -6,6 +6,8 @@ from zoneinfo import ZoneInfo
 import datetime
 from typing import Any, Dict, List, Tuple, Optional
 
+PLACEHOLDER = "—"
+
 # WHY: Always use the UK timezone so DST is handled by the system zone database.
 LONDON = ZoneInfo("Europe/London")
 
@@ -49,12 +51,12 @@ def make_auth_header(auth_value: str) -> str:
 
 # WHY: Create succinct lesson fields for the widget; widget will read these individual keys.
 def extract_lesson_fields(lesson: Dict[str, Any]) -> Dict[str, str]:
-    subject = lesson.get("classGroup", {}).get("subject") or lesson.get("subject") or "No Lesson"
-    start_raw = lesson.get("period", {}).get("startDateTime") or "00:00"
-    end_raw = lesson.get("period", {}).get("endDateTime") or "00:00"
-    room = lesson.get("room") or "0"
+    subject = lesson.get("classGroup", {}).get("subject") or lesson.get("subject") or ""
+    start_raw = lesson.get("period", {}).get("startDateTime") or ""
+    end_raw = lesson.get("period", {}).get("endDateTime") or ""
+    room = lesson.get("room") or ""
     teacher = ""
-    t = lesson.get("teacher") if t != "" else "No Teacher"
+    t = lesson.get("teacher")
     if isinstance(t, dict):
         teacher = " ".join([v for v in (t.get("title"), t.get("forename"), t.get("surname")) if v]).strip()
     return {
@@ -182,10 +184,17 @@ def widget(request: Request):
 
     # Ensure keys exist (Widgy expects stable keys)
     defaults = {
-        "current_lesson_subject": "", "current_lesson_start_hm": "", "current_lesson_end_hm": "",
-        "current_lesson_room": "", "current_lesson_teacher": "",
-        "next_lesson_subject": "", "next_lesson_start_hm": "", "next_lesson_end_hm": "",
-        "next_lesson_room": "", "next_lesson_teacher": "",
+        "current_lesson_subject": "No lesson",
+        "current_lesson_start_hm": PLACEHOLDER,
+        "current_lesson_end_hm": PLACEHOLDER,
+        "current_lesson_room": PLACEHOLDER,
+        "current_lesson_teacher": PLACEHOLDER,
+
+        "next_lesson_subject": "No next lesson",
+        "next_lesson_start_hm": PLACEHOLDER,
+        "next_lesson_end_hm": PLACEHOLDER,
+        "next_lesson_room": PLACEHOLDER,
+        "next_lesson_teacher": PLACEHOLDER,
     }
     resp.update({k: v for k, v in defaults.items()})
     resp.update(current_lesson_fields)
