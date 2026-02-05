@@ -49,14 +49,14 @@ def make_auth_header(auth_value: str) -> str:
 
 # WHY: Create succinct lesson fields for the widget; widget will read these individual keys.
 def extract_lesson_fields(lesson: Dict[str, Any]) -> Dict[str, str]:
-    subject = lesson.get("classGroup", {}).get("subject") or lesson.get("subject") or ""
-    start_raw = lesson.get("period", {}).get("startDateTime") or ""
-    end_raw = lesson.get("period", {}).get("endDateTime") or ""
-    room = lesson.get("room") or ""
-    teacher = ""
+    subject = lesson.get("classGroup", {}).get("subject") or lesson.get("subject") or "No Lesson"
+    start_raw = lesson.get("period", {}).get("startDateTime") or "00:00"
+    end_raw = lesson.get("period", {}).get("endDateTime") or "00:00"
+    room = lesson.get("room") or "0"
+    teacher = "No teacher"
     t = lesson.get("teacher")
     if isinstance(t, dict):
-        teacher = " ".join([v for v in (t.get("title"), t.get("surname")) if v]).strip()
+        teacher = " ".join([v for v in (t.get("title"), t.get("forename"), t.get("surname")) if v]).strip()
     return {
         "subject": subject,
         "start_raw": start_raw,
@@ -259,4 +259,3 @@ def widget(request: Request):
             "Expires": "0",
         },
     )
-
