@@ -184,13 +184,13 @@ def widget(request: Request):
 
     # Ensure keys exist (Widgy expects stable keys)
     defaults = {
-        "current_lesson_subject": "No lesson",
+        "current_lesson_subject": PLACEHOLDER,
         "current_lesson_start_hm": PLACEHOLDER,
         "current_lesson_end_hm": PLACEHOLDER,
         "current_lesson_room": PLACEHOLDER,
         "current_lesson_teacher": PLACEHOLDER,
 
-        "next_lesson_subject": "No next lesson",
+        "next_lesson_subject": PLACEHOLDER,
         "next_lesson_start_hm": PLACEHOLDER,
         "next_lesson_end_hm": PLACEHOLDER,
         "next_lesson_room": PLACEHOLDER,
@@ -268,3 +268,4 @@ def widget(request: Request):
             "Expires": "0",
         },
     )
+
